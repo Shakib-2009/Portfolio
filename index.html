@@ -1,0 +1,1606 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shakib — Student Portfolio | Web Development & C Programming</title>
+  <meta name="description" content="Personal portfolio of Shakib, a student developing skills in web development, C programming, and WordPress through coursework, practice, and personal projects." />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', ' system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            obsidian: '#0b0604',
+            coffee: '#140b07',
+            ember: {
+              400: '#ff7b3a',
+              500: '#ff5e1a',
+              600: '#ea4c0f',
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    :root {
+      --bg-dark: #0b0604;
+      --bg-card: rgba(28, 16, 11, 0.72);
+      --border-warm: rgba(255, 115, 50, 0.18);
+      --border-warm-hover: rgba(255, 115, 50, 0.5);
+      --accent-orange: #ff5e1a;
+      --accent-amber: #ff8c3b;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: #f8fafc;
+      overflow-x: hidden;
+      background-image:
+        radial-gradient(circle at 82% 24%, rgba(234, 88, 12, 0.24) 0%, rgba(154, 52, 18, 0.08) 36%, transparent 68%),
+        radial-gradient(circle at 12% 80%, rgba(255, 94, 26, 0.14) 0%, transparent 50%),
+        linear-gradient(180deg, #0b0604 0%, #130a06 50%, #0b0604 100%);
+    }
+
+    /* Subtle noise & warm glassmorphism */
+    .glass-pill {
+      background: rgba(22, 12, 8, 0.8);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 126, 62, 0.2);
+    }
+
+    .glass-card {
+      background: linear-gradient(145deg, rgba(34, 19, 13, 0.72) 0%, rgba(19, 10, 7, 0.88) 100%);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 126, 62, 0.16);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .glass-card:hover {
+      border-color: rgba(255, 110, 48, 0.48);
+      box-shadow: 0 16px 40px -12px rgba(255, 94, 26, 0.15);
+      transform: translateY(-3px);
+    }
+
+    /* Reference-inspired warm glowing spotlight card */
+    .hero-glass-note {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 122, 51, 0.05) 100%);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    /* Orbital rings from reference artwork */
+    .orbit-ring {
+      border: 1px solid rgba(255, 132, 75, 0.16);
+      border-radius: 9999px;
+    }
+
+    /* Floating badge subtle animation */
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px) rotate(var(--rot, 0deg)); }
+      50% { transform: translateY(-8px) rotate(var(--rot, 0deg)); }
+    }
+
+    .float-badge {
+      animation: floatSlow 4.5s ease-in-out infinite;
+    }
+
+    .float-badge-delay-1 { animation-delay: 0.9s; }
+    .float-badge-delay-2 { animation-delay: 1.8s; }
+    .float-badge-delay-3 { animation-delay: 2.7s; }
+
+    /* Respect user reduced motion preferences */
+    @media (prefers-reduced-motion: reduce) {
+      *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+      .float-badge {
+        animation: none !important;
+      }
+      .glass-card:hover {
+        transform: none !important;
+      }
+    }
+
+    /* Accessible keyboard focus states */
+    a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+      outline: 2px solid #ff7b3a;
+      outline-offset: 3px;
+    }
+    /* Spacious skill cards inspired by the reference, four per desktop row. */
+    #skills.skills-panel {
+      box-sizing: border-box;
+      width: calc(100% - 32px);
+      max-width: 1200px;
+      margin: 64px auto;
+      padding: clamp(24px, 4vw, 48px);
+      border: 1px solid rgba(255, 125, 55, .2);
+      border-radius: 26px;
+      background: linear-gradient(145deg, rgba(25,14,9,.85), rgba(13,8,5,.95));
+      scroll-margin-top: 110px;
+    }
+    #skills .nav-pill-box {
+      border: 1px solid rgba(255,125,55,.25);
+      background: rgba(22,13,9,.8);
+    }
+    #skills .skills-wrap { display: flex; flex-wrap: wrap; gap: 20px; }
+    #skills .skills-wrap > article {
+      box-sizing: border-box;
+      flex: 0 0 calc((100% - 60px) / 4);
+      min-width: 0;
+      min-height: 230px;
+      padding: 28px 18px;
+      border: 1px solid rgba(255,130,65,.22);
+      border-radius: 20px;
+      background: linear-gradient(160deg, rgba(31,18,12,.85), rgba(15,9,6,.95));
+      transition: transform .2s ease, border-color .2s ease;
+    }
+    #skills .skills-wrap > article:hover { transform: translateY(-4px); border-color: #ff7b3a; }
+    #skills .skills-wrap > article > div:first-child { width: 64px; height: 64px; }
+    #skills .skills-wrap > article > div:first-child svg { width: 56px; height: 56px; }
+    #skills .skills-wrap h3 { font-size: 18px; line-height: 1.4; }
+    #skills .skills-wrap p { font-size: 14px; line-height: 1.5; margin-top: 8px; color: #d6d3d1; }
+    #skills .skills-wrap > .node-learning-card {
+      background: linear-gradient(160deg, #102115, #0b140e);
+      border-color: rgba(74,222,128,.55);
+    }
+    @media (max-width: 1023px) {
+      #skills .skills-wrap > article { flex-basis: calc((100% - 20px) / 2); }
+    }
+    @media (max-width: 479px) {
+      #skills .skills-wrap > article { flex-basis: 100%; min-height: 210px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      #skills .skills-wrap > article:hover { transform: none; }
+    }
+    /* Project showcase: large illustrated cards with four-column flex wrapping. */
+    #projects.project-panel {
+      box-sizing: border-box; width: calc(100% - 32px); max-width: 1600px;
+      margin: 64px auto; padding: clamp(24px, 3vw, 40px);
+      border: 1px solid rgba(255,125,55,.2); border-radius: 26px;
+      background: linear-gradient(145deg, rgba(25,14,9,.85), rgba(13,8,5,.95));
+      scroll-margin-top: 110px;
+    }
+    #projectsGrid { display: flex; flex-wrap: wrap; align-items: stretch; gap: 20px; }
+    .project-showcase-card {
+      box-sizing: border-box; flex: 0 0 calc((100% - 60px) / 4); min-width: 0;
+      display: flex; flex-direction: column; overflow: hidden;
+      border: 1px solid rgba(255,130,65,.23); border-radius: 20px;
+      background: linear-gradient(160deg, #1c100a, #100905);
+      transition: transform .2s ease, border-color .2s ease;
+    }
+    .project-showcase-card:hover { transform: translateY(-4px); border-color: #ff7b3a; }
+    .project-art { height: 200px; padding: 12px; border-bottom: 1px solid rgba(255,255,255,.1); background: radial-gradient(ellipse at bottom, #51210e, #120b08 75%); }
+    .project-art svg { display: block; width: 100%; height: 100%; }
+    .project-copy { padding: 24px 20px; }
+    .project-copy h3 { font-size: 20px; font-weight: 700; line-height: 1.4; color: white; margin-bottom: 10px; overflow-wrap: anywhere; }
+    .project-copy p { font-size: 14px; line-height: 1.7; color: #d6d3d1; }
+    .project-copy .project-technologies { color: #ff8c55; font-size: 13px; margin-bottom: 14px; font-weight: 600; }
+    .project-learning { margin-top: 16px; }
+    .project-learning span { display: block; font-size: 12px; font-weight: 600; color: #ff8c55; margin-bottom: 3px; }
+    .project-actions { margin-top: auto; padding: 0 20px 24px; display: flex; flex-direction: column; gap: 10px; }
+    .project-action { display: flex; justify-content: center; align-items: center; min-height: 44px; padding: 10px 14px; border: 1px solid #613722; border-radius: 999px; color: white; font-size: 13px; font-weight: 600; text-align: center; }
+    .project-action:hover { background: #382014; }
+    .project-action-primary { background: linear-gradient(135deg, #ff792f, #ef4c0c); border-color: #ff8c55; }
+    .project-action-primary:hover { background: #ff7029; }
+    @media (max-width: 1199px) { .project-showcase-card { flex-basis: calc((100% - 20px) / 2); } }
+    @media (max-width: 639px) { .project-showcase-card { flex-basis: 100%; } }
+    @media (prefers-reduced-motion: reduce) { .project-showcase-card:hover { transform: none; } }
+    /* GitHub and LinkedIn connection cards. */
+    #contact .contact-cards { display: flex; flex-wrap: wrap; gap: 24px; align-items: stretch; }
+    #contact .contact-cards > .contact-card {
+      box-sizing: border-box; flex: 1 1 calc(50% - 12px); min-width: 0; max-width: none;
+      margin: 0; padding: clamp(28px, 4vw, 48px); display: flex; flex-direction: column;
+      justify-content: center; align-items: center; min-height: 360px;
+    }
+    #contact .contact-card h2, #contact .contact-card h3 { font-size: clamp(28px, 3vw, 38px); line-height: 1.2; }
+    #contact .contact-card > div:last-child { position: relative; }
+    #contact .linkedin-card {
+      background: radial-gradient(ellipse at bottom, rgba(10,102,194,.22), transparent 75%), linear-gradient(145deg,#091a2c,#080f19);
+      border: 1px solid rgba(77,156,235,.4); border-radius: 24px; text-align: center;
+    }
+    .linkedin-label { color: #79bbff; border: 1px solid rgba(77,156,235,.35); background: rgba(10,102,194,.12); border-radius: 999px; padding: 6px 12px; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 16px; }
+    .linkedin-card h3 { color: #fff; font-weight: 800; margin-bottom: 16px; }
+    .linkedin-card p { color: #c5d8ed; font-size: 16px; line-height: 1.7; margin-bottom: 28px; }
+    #optionalLinkedinBtn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 14px 24px; border-radius: 999px; background: #0a66c2; color: white; font-weight: 600; box-shadow: 0 8px 26px rgba(10,102,194,.25); transition: background .2s ease; }
+    #optionalLinkedinBtn:hover { background: #004182; }
+    #optionalLinkedinBtn svg { width: 22px; height: 22px; flex-shrink: 0; color: white; }
+    #optionalLinkedinBtn.hidden { display: none; }
+    @media (max-width: 767px) { #contact .contact-cards > .contact-card { flex-basis: 100%; } }
+  </style>
+</head>
+
+<body class="min-h-screen selection:bg-ember-500 selection:text-white antialiased">
+
+  <!-- Skip to Main Content Link for Keyboard Accessibility -->
+  <a href="#home" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-ember-500 focus:text-white focus:rounded-lg font-medium">
+    Skip to content
+  </a>
+
+  <!-- ==================== HEADER / NAVIGATION ==================== -->
+  <header class="fixed top-0 left-0 right-0 z-40 px-4 sm:px-6 lg:px-10 pt-4 pb-2">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+      
+      <!-- Brand Logo (Inspired by 'noah.' in reference image, adapted to 'shakib.') -->
+      <a href="#home" class="text-xl sm:text-2xl font-extrabold tracking-tight text-white flex items-center gap-1 py-1.5 px-2 rounded-lg">
+        <span id="brandNameDisplay">shakib</span><span class="text-ember-500">.</span>
+      </a>
+
+      <!-- Center Pill Navigation (Desktop) -->
+      <nav aria-label="Main Navigation" class="hidden lg:flex items-center glass-pill rounded-full px-3 py-1.5 shadow-lg">
+        <ul id="desktopNavList" class="flex items-center gap-1 text-sm font-medium">
+          <!-- Rendered dynamically by JS so Shakib can toggle/reorder if desired -->
+        </ul>
+      </nav>
+
+      <!-- Right Action Area: Optional Resume Button + Edit Portfolio Toggle + Mobile Menu Button -->
+      <div class="flex items-center gap-2.5">
+        <!-- Download Resume Button: Strictly hidden unless an actual resume file URL is provided -->
+        <a id="resumeHeaderBtn"
+           href="#"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="hidden items-center gap-2.5 glass-pill hover:border-ember-500/60 text-white text-xs sm:text-sm font-medium px-4 py-2 rounded-full transition-all">
+          <span class="w-6 h-6 rounded-md bg-white text-obsidian flex items-center justify-center font-bold text-xs shadow">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 16v-8m0 8l-3-3m3 3l3-3M6 20h12a2 2 0 002-2V8l-6-6H6a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </span>
+          <span>Download Resume</span>
+        </a>
+
+        <!-- Customize / Edit Portfolio Button (Allows editing nav, adding projects, or setting a resume link) -->
+        <button id="openCustomizerBtn"
+                type="button"
+                title="Customize navigation, add projects, or link a resume"
+                class="glass-pill hover:border-ember-400/60 text-stone-200 hover:text-white text-xs sm:text-sm font-medium px-3.5 py-2 rounded-full flex items-center gap-2 transition-all">
+          <svg class="w-4 h-4 text-ember-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+          </svg>
+          <span class="hidden sm:inline">Edit Portfolio</span>
+        </button>
+
+        <!-- Accessible Mobile Menu Button -->
+        <button id="mobileMenuBtn"
+                type="button"
+                aria-expanded="false"
+                aria-controls="mobileMenuPanel"
+                aria-label="Toggle navigation menu"
+                class="lg:hidden glass-pill p-2.5 rounded-full text-stone-200 hover:text-white">
+          <svg id="menuIconOpen" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+          <svg id="menuIconClose" class="w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Dropdown -->
+    <div id="mobileMenuPanel" class="hidden lg:hidden max-w-7xl mx-auto mt-3 glass-pill rounded-2xl p-4 shadow-2xl">
+      <ul id="mobileNavList" class="flex flex-col gap-1 text-sm font-medium">
+        <!-- Populated dynamically -->
+      </ul>
+      <div id="mobileResumeWrapper" class="hidden mt-3 pt-3 border-t border-white/10">
+        <a id="resumeMobileBtn"
+           href="#"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="w-full flex items-center justify-center gap-2 bg-ember-500 hover:bg-ember-600 text-white font-medium py-2.5 px-4 rounded-xl transition">
+          <span>Download Resume</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="relative pt-28 sm:pt-32">
+
+    <!-- Decorative Glowing Corner Accents (Inspired by reference image's warm 3D amber shapes) -->
+    <div aria-hidden="true" class="pointer-events-none fixed -top-16 -right-16 w-72 h-72 rounded-full bg-ember-500/15 blur-3xl"></div>
+    <div aria-hidden="true" class="pointer-events-none fixed bottom-0 -left-20 w-80 h-80 rounded-full bg-orange-600/10 blur-3xl"></div>
+
+    <!-- ==================== 1. HOME / HERO SECTION ==================== -->
+    <section id="home" class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 pt-4 pb-20 lg:py-16">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+        
+        <!-- Left Column: Hero Copy + CTAs + Honest Student Focus Card -->
+        <div class="lg:col-span-7 space-y-6 z-10">
+          <p class="text-lg sm:text-xl font-medium text-stone-300 tracking-wide">
+            Hi, I’m <span class="text-ember-500 font-bold" id="heroNameHighlight">Shakib</span>
+          </p>
+
+          <h1 id="heroHeading" class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.12]">
+            Learning to Code. <br class="hidden sm:inline" />
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-orange-100 to-ember-400">
+              Building Along the Way.
+            </span>
+          </h1>
+
+          <p id="heroDescription" class="text-base sm:text-lg text-stone-300 max-w-2xl leading-relaxed">
+            I’m a student developing my skills in web development, C programming, and WordPress through coursework, practice, and personal projects.
+          </p>
+
+          <!-- Primary & Secondary Action Buttons -->
+          <div class="flex flex-wrap items-center gap-4 pt-2">
+            <a href="#projects"
+               class="inline-flex items-center justify-center gap-2 bg-ember-500 hover:bg-ember-600 text-white font-semibold px-7 py-3.5 rounded-full shadow-lg shadow-ember-500/25 transition-all hover:scale-[1.02] active:scale-[0.99]">
+              <span>View My Projects</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </a>
+
+            <a href="https://github.com/Shakib-2009"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="inline-flex items-center justify-center gap-2.5 glass-pill hover:border-ember-400/60 text-stone-100 hover:text-white font-medium px-6 py-3.5 rounded-full transition-all">
+              <svg class="w-5 h-5 text-ember-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+              </svg>
+              <span>Explore My GitHub</span>
+            </a>
+          </div>
+
+          <div class="w-full max-w-md border-t border-white/10 pt-6 mt-6">
+            <!-- Glassmorphic Student Note Card (Replaces the fake celebrity testimonial from the reference image with honest student focus) -->
+            <div class="hero-glass-note rounded-3xl p-5 sm:p-6 max-w-md relative overflow-hidden">
+              <div aria-hidden="true" class="absolute -bottom-8 -left-8 w-28 h-28 bg-ember-500/25 rounded-full blur-xl pointer-events-none"></div>
+              <div class="flex items-center gap-2 text-ember-400 font-mono text-xs uppercase tracking-wider mb-2">
+                <span class="w-2 h-2 rounded-full bg-ember-500 animate-pulse"></span>
+                <span>Current Focus</span>
+              </div>
+              <p class="text-sm text-stone-200 leading-relaxed">
+                Building hands-on coursework and personal practice projects in <strong class="text-white font-semibold">HTML, CSS, JavaScript, and C</strong> while exploring backend fundamentals with <strong class="text-white font-semibold">Node.js</strong>.
+              </p>
+              <div class="mt-4 flex items-center gap-3 pt-3 border-t border-white/10">
+                <div class="w-9 h-9 rounded-full bg-ember-500/20 border border-ember-400/40 flex items-center justify-center text-ember-300 font-bold text-sm">
+                  S
+                </div>
+                <div>
+                  <div class="text-xs font-semibold text-white">Shakib</div>
+                  <div class="text-[11px] text-stone-400">Student Developer • Learning by Building</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Friendly Developer Illustration & Orbiting Tech Badges (Inspired by Reference Image) -->
+        <div class="lg:col-span-5 relative flex items-center justify-center min-h-[380px] sm:min-h-[450px]">
+          
+          <!-- Concentric Orbital Rings -->
+          <div aria-hidden="true" class="orbit-ring absolute w-[290px] h-[290px] sm:w-[370px] sm:h-[370px]"></div>
+          <div aria-hidden="true" class="orbit-ring absolute w-[360px] h-[360px] sm:w-[450px] sm:h-[450px] opacity-60"></div>
+
+          <!-- Warm Radial Glow Behind Character -->
+          <div aria-hidden="true" class="absolute w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-gradient-to-tr from-ember-600/35 via-amber-500/20 to-transparent blur-2xl"></div>
+
+          <!-- Floating Badge 1: HTML5 (Top Left Orbit) -->
+          <div style="--rot: -10deg;" class="float-badge absolute top-4 left-6 sm:top-6 sm:left-10 z-20 w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-[#e44d26] to-[#f16529] p-2.5 shadow-xl shadow-orange-950/60 border border-white/20 flex items-center justify-center" title="HTML5 — Page structure & semantic markup">
+            <span class="font-extrabold text-white text-xs sm:text-sm tracking-tighter">&lt;HTML&gt;</span>
+          </div>
+
+          <!-- Floating Badge 2: CSS3 (Middle Left Orbit) -->
+          <div style="--rot: 8deg;" class="float-badge float-badge-delay-1 absolute top-1/2 -translate-y-8 left-0 sm:left-2 z-20 w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-[#1572b6] to-[#33a9dc] p-2.5 shadow-xl shadow-blue-950/60 border border-white/20 flex items-center justify-center" title="CSS3 — Styling and page layouts">
+            <span class="font-extrabold text-white text-xs sm:text-sm tracking-tight">CSS3</span>
+          </div>
+
+          <!-- Floating Badge 3: JS / Node (Bottom Left Orbit) -->
+          <div style="--rot: -6deg;" class="float-badge float-badge-delay-2 absolute bottom-8 left-6 sm:bottom-10 sm:left-10 z-20 w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#1e241b] border border-emerald-500/40 p-2.5 shadow-xl flex items-center justify-center" title="JavaScript & Node.js">
+            <span class="font-mono font-bold text-emerald-400 text-sm sm:text-base">JS</span>
+          </div>
+
+          <!-- Floating Badge 4: C Programming (Top Right Orbit) -->
+          <div style="--rot: 12deg;" class="float-badge float-badge-delay-3 absolute top-10 right-4 sm:top-12 sm:right-6 z-20 w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-ember-600 p-2.5 shadow-xl border border-white/25 flex items-center justify-center" title="C Programming">
+            <span class="font-mono font-extrabold text-white text-base sm:text-lg">C</span>
+          </div>
+
+          <!-- Shakib's portfolio hero portrait -->
+          <div class="relative z-10 w-full max-w-[580px]">
+            <img src="shakib-hero-reference.png"
+                 alt="Shakib in an orange shirt working at a laptop"
+                 width="1536" height="1024" fetchpriority="high"
+                 class="block w-full h-auto object-contain rounded-3xl"
+                 style="-webkit-mask-image: radial-gradient(ellipse at center, black 60%, transparent 100%); mask-image: radial-gradient(ellipse at center, black 60%, transparent 100%);" />
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== 2. ABOUT SECTION ==================== -->
+    <section id="about" class="py-20 px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto">
+      <div class="glass-card rounded-3xl p-8 sm:p-12 lg:p-14 relative overflow-hidden">
+        <div aria-hidden="true" class="absolute -top-24 -right-24 w-64 h-64 bg-ember-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+          <!-- Section Heading -->
+          <div class="lg:col-span-5 space-y-3">
+            <span class="inline-flex items-center gap-2 text-ember-400 font-mono text-xs uppercase tracking-widest px-3 py-1 rounded-full bg-ember-500/10 border border-ember-500/20">
+              About Me
+            </span>
+            <h2 class="text-3xl sm:text-4xl font-bold text-white tracking-tight">
+              Learning by building and improving through practice.
+            </h2>
+            <p class="text-stone-400 text-sm sm:text-base pt-1">
+              An honest look at what I’m studying and creating right now.
+            </p>
+          </div>
+
+          <!-- Natural Student Introduction & 4 Key Interest Areas -->
+          <div class="lg:col-span-7 space-y-6 text-stone-200 leading-relaxed">
+            <p id="aboutParagraph1" class="text-base sm:text-lg">
+              I’m a student who enjoys learning how software and websites work from the ground up. For me, the best way to understand a new concept is to build something with it—whether that means writing a console program in C to solve a problem or structuring a responsive webpage from scratch.
+            </p>
+            <p id="aboutParagraph2" class="text-base text-stone-300">
+              Every coursework assignment and personal practice project helps me write cleaner code, think through logic step by step, and get comfortable with modern development tools.
+            </p>
+
+            <!-- 4 Core Interests Grid -->
+            <div class="pt-2">
+              <h3 class="text-xs font-mono uppercase tracking-wider text-ember-400 mb-4">What I’m Interested In</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                
+                <div class="flex items-start gap-3.5 p-4 rounded-2xl bg-white/[0.03] border border-white/10">
+                  <div class="w-9 h-9 rounded-xl bg-ember-500/15 border border-ember-500/30 flex items-center justify-center text-ember-400 shrink-0 mt-0.5">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 class="font-semibold text-white text-sm">Building Websites</h4>
+                    <p class="text-xs text-stone-400 mt-1">Structuring clean pages with HTML, CSS, and interactive JavaScript.</p>
+                  </div>
+                </div>
+
+                <div class="flex items-start gap-3.5 p-4 rounded-2xl bg-white/[0.03] border border-white/10">
+                  <div class="w-9 h-9 rounded-xl bg-ember-500/15 border border-ember-500/30 flex items-center justify-center text-ember-400 shrink-0 mt-0.5">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 class="font-semibold text-white text-sm">Programming Fundamentals</h4>
+                    <p class="text-xs text-stone-400 mt-1">Solving problems with C using loops, functions, arrays, and pointers.</p>
+                  </div>
+                </div>
+
+                <div class="flex items-start gap-3.5 p-4 rounded-2xl bg-white/[0.03] border border-white/10">
+                  <div class="w-9 h-9 rounded-xl bg-ember-500/15 border border-ember-500/30 flex items-center justify-center text-ember-400 shrink-0 mt-0.5">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 class="font-semibold text-white text-sm">WordPress Website Creation</h4>
+                    <p class="text-xs text-stone-400 mt-1">Creating and customizing websites and layouts with WordPress.</p>
+                  </div>
+                </div>
+
+                <div class="flex items-start gap-3.5 p-4 rounded-2xl bg-white/[0.03] border border-white/10">
+                  <div class="w-9 h-9 rounded-xl bg-ember-500/15 border border-ember-500/30 flex items-center justify-center text-ember-400 shrink-0 mt-0.5">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 class="font-semibold text-white text-sm">Learning Development Tools</h4>
+                    <p class="text-xs text-stone-400 mt-1">Using Git, GitHub, and exploring backend basics with Node.js.</p>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 3. SKILLS SECTION ==================== -->
+    <section id="skills" class="skills-panel">
+        <!-- Section Header Row -->
+        <div class="flex flex-wrap items-end justify-between gap-4 mb-7">
+          <div>
+            <span class="text-ember-400 font-semibold text-xs sm:text-sm tracking-wide block mb-1">
+              Skills
+            </span>
+            <h2 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+              My learning <span class="text-ember-400">toolkit</span>
+            </h2>
+          </div>
+
+          <!-- Currently practicing pill badge -->
+          <div class="nav-pill-box rounded-full px-4 py-1.5 flex items-center gap-2 text-xs font-medium text-stone-200">
+            <span class="w-2 h-2 rounded-full bg-ember-500 shadow-[0_0_8px_#ff5d17]"></span>
+            <span>Currently practicing</span>
+          </div>
+        </div>
+
+        <!-- Responsive wrapping cards: four per desktop row -->
+        <div class="skills-wrap">
+          
+          <!-- 1. HTML -->
+          <article class="dark-glass-card rounded-2xl p-4 flex flex-col items-center text-center justify-between min-h-[155px]">
+            <div class="w-11 h-11 flex items-center justify-center mt-1">
+              <svg viewBox="0 0 64 64" class="w-10 h-10">
+                <polygon points="10,6 54,6 50,52 32,58 14,52" fill="#e44d26"/>
+                <polygon points="32,10 50,10 46.5,49 32,53.8" fill="#f16529"/>
+                <path d="M19,18 H45 L44,24 H26 L26.6,31 H43.4 L42,45 L32,48 L22,45 L21.3,37 H27.3 L27.7,41 L32,42.2 L36.3,41 L36.8,36 H21 Z" fill="#ffffff"/>
+              </svg>
+            </div>
+            <div class="mt-3">
+              <h3 class="text-xs sm:text-[13px] font-bold text-white">HTML</h3>
+              <p class="text-[11px] text-stone-400 mt-1 leading-tight">Structure web pages</p>
+            </div>
+          </article>
+
+          <!-- 2. CSS -->
+          <article class="dark-glass-card rounded-2xl p-4 flex flex-col items-center text-center justify-between min-h-[155px]">
+            <div class="w-11 h-11 flex items-center justify-center mt-1">
+              <svg viewBox="0 0 64 64" class="w-10 h-10">
+                <polygon points="10,6 54,6 50,52 32,58 14,52" fill="#264de4"/>
+                <polygon points="32,10 50,10 46.5,49 32,53.8" fill="#2965f1"/>
+                <path d="M19,18 H45 L43.5,33 H26.5 L27,39 H37.5 L37,43 L32,44.5 L27,43 L26.7,39 H20.7 L21.5,46 L32,49 L42.5,46 L44.5,27 H26 L25.5,23 H44.5 L45,18 Z" fill="#ffffff"/>
+              </svg>
+            </div>
+            <div class="mt-3">
+              <h3 class="text-xs sm:text-[13px] font-bold text-white">CSS</h3>
+              <p class="text-[11px] text-stone-400 mt-1 leading-tight">Styling and layouts</p>
+            </div>
+          </article>
+
+          <!-- 3. JavaScript -->
+          <article class="dark-glass-card rounded-2xl p-4 flex flex-col items-center text-center justify-between min-h-[155px]">
+            <div class="w-11 h-11 flex items-center justify-center mt-1">
+              <svg viewBox="0 0 64 64" class="w-10 h-10">
+                <rect x="8" y="8" width="48" height="48" rx="10" fill="#f7df1e"/>
+                <text x="20" y="45" fill="#111111" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="22">JS</text>
+              </svg>
+            </div>
+            <div class="mt-3">
+              <h3 class="text-xs sm:text-[13px] font-bold text-white">JavaScript</h3>
+              <p class="text-[11px] text-stone-400 mt-1 leading-tight">Logic and interaction</p>
+            </div>
+          </article>
+
+          <!-- 4. C Programming -->
+          <article class="dark-glass-card rounded-2xl p-4 flex flex-col items-center text-center justify-between min-h-[155px]">
+            <div class="w-11 h-11 flex items-center justify-center mt-1">
+              <svg viewBox="0 0 64 64" class="w-10 h-10">
+                <polygon points="32,4 58,19 58,45 32,60 6,45 6,19" fill="#5c6bc0"/>
+                <polygon points="32,4 58,19 32,32 6,19" fill="#7986cb" opacity="0.6"/>
+                <path d="M40,24 C36,19 26,19 22,26 C18,32 20,42 28,45 C33,47 38,45 41,41 L36,37 C34,39 30,40 27,38 C24,36 24,30 27,27 C30,24 34,25 36,28 Z" fill="#ffffff"/>
+              </svg>
+            </div>
+            <div class="mt-3">
+              <h3 class="text-xs sm:text-[12.5px] font-bold text-white whitespace-nowrap">C Programming</h3>
+              <p class="text-[11px] text-stone-400 mt-1 leading-tight">Arrays, strings and pointers</p>
+            </div>
+          </article>
+
+          <!-- 5. Git & GitHub -->
+          <article class="dark-glass-card rounded-2xl p-4 flex flex-col items-center text-center justify-between min-h-[155px]">
+            <div class="h-11 flex items-center justify-center gap-1 mt-1">
+              <!-- Git Diamond -->
+              <svg viewBox="0 0 64 64" class="w-8 h-8">
+                <rect x="32" y="6" width="36" height="36" rx="6" transform="rotate(45 32 6)" fill="#f05032"/>
+                <circle cx="32" cy="22" r="4" fill="#fff"/>
+                <circle cx="32" cy="42" r="4" fill="#fff"/>
+                <circle cx="42" cy="32" r="4" fill="#fff"/>
+                <line x1="32" y1="22" x2="32" y2="42" stroke="#fff" stroke-width="3"/>
+                <line x1="32" y1="26" x2="42" y2="32" stroke="#fff" stroke-width="3"/>
+              </svg>
+              <!-- GitHub Octocat -->
+              <svg viewBox="0 0 24 24" class="w-7 h-7 text-white" fill="currentColor">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+              </svg>
+            </div>
+            <div class="mt-3">
+              <h3 class="text-xs sm:text-[13px] font-bold text-white">Git &amp; GitHub</h3>
+              <p class="text-[11px] text-stone-400 mt-1 leading-tight">Version control and collaboration</p>
+            </div>
+          </article>
+
+          <!-- 6. WordPress -->
+          <article class="dark-glass-card rounded-2xl p-4 flex flex-col items-center text-center justify-between min-h-[155px]">
+            <div class="w-11 h-11 flex items-center justify-center mt-1">
+              <svg viewBox="0 0 64 64" class="w-10 h-10">
+                <circle cx="32" cy="32" r="26" fill="#21759b" stroke="#55a4c9" stroke-width="2"/>
+                <text x="17" y="43" fill="#ffffff" font-family="Georgia, serif" font-weight="bold" font-size="30">W</text>
+              </svg>
+            </div>
+            <div class="mt-3">
+              <h3 class="text-xs sm:text-[13px] font-bold text-white">WordPress</h3>
+              <p class="text-[11px] text-stone-400 mt-1 leading-tight">Website creation &amp; customization</p>
+            </div>
+          </article>
+
+          <!-- 7. jQuery -->
+          <article class="dark-glass-card rounded-2xl p-4 flex flex-col items-center text-center justify-between min-h-[155px]">
+            <div class="w-11 h-11 flex items-center justify-center mt-1">
+              <svg viewBox="0 0 64 64" class="w-10 h-10">
+                <path d="M16,30 C16,44 28,52 44,48 C30,48 22,38 24,24 C20,25 17,27 16,30 Z" fill="#0769ad"/>
+                <path d="M26,22 C26,33 35,40 48,37 C37,37 31,29 32,18 C29,19 27,20 26,22 Z" fill="#2997d8"/>
+                <path d="M36,15 C36,23 42,28 51,26 C43,26 39,20 40,12 C38,13 37,14 36,15 Z" fill="#7acef4"/>
+              </svg>
+            </div>
+            <div class="mt-3">
+              <h3 class="text-xs sm:text-[13px] font-bold text-white">jQuery</h3>
+              <p class="text-[11px] text-stone-400 mt-1 leading-tight">Simpler DOM manipulation</p>
+            </div>
+          </article>
+
+          <!-- 8. Node.js (Green Highlighted Card — Currently Learning) -->
+          <article class="node-learning-card rounded-2xl p-4 flex flex-col items-center text-center justify-between min-h-[155px]">
+            <div class="w-11 h-11 flex items-center justify-center mt-1">
+              <svg viewBox="0 0 64 64" class="w-10 h-10">
+                <polygon points="32,5 56,19 56,45 32,59 8,45 8,19" fill="#215732" stroke="#68a063" stroke-width="3"/>
+                <text x="19" y="39" fill="#8cc84b" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="19">JS</text>
+              </svg>
+            </div>
+            <div class="mt-3">
+              <h3 class="text-xs sm:text-[13px] font-bold text-white">Node.js</h3>
+              <div class="flex items-center justify-center gap-1.5 mt-1">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]"></span>
+                <span class="text-[11px] font-medium text-emerald-300 leading-tight">Currently<br/>learning</span>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+    <!-- ==================== 4. PROJECTS SECTION ==================== -->
+    <section id="projects" class="project-panel">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+        <div class="space-y-3 max-w-2xl">
+          <span class="inline-flex items-center gap-2 text-ember-400 font-mono text-xs uppercase tracking-widest px-3 py-1 rounded-full bg-ember-500/10 border border-ember-500/20">
+            Projects
+          </span>
+          <h2 class="text-3xl sm:text-4xl font-bold text-white tracking-tight">
+            Practice into <span class="text-ember-400">projects</span>
+          </h2>
+          <p class="text-stone-300 text-base">
+            Hands-on projects built while practicing C programming and core web development fundamentals.
+          </p>
+        </div>
+
+        <!-- Quick Button to Add/Edit Projects via Customizer -->
+        <button type="button"
+                onclick="openCustomizer('projects')"
+                class="self-start md:self-auto inline-flex items-center gap-2 glass-pill hover:border-ember-400/60 text-xs sm:text-sm font-medium text-stone-200 hover:text-white px-4 py-2.5 rounded-full transition">
+          <svg class="w-4 h-4 text-ember-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+          </svg>
+          <span>Add or Edit Projects</span>
+        </button>
+      </div>
+
+      <!-- Project Cards Grid (Rendered from state so Shakib can also add/edit projects) -->
+      <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Populated by JavaScript -->
+      </div>
+
+      <!-- Practice Repositories Banner -->
+      <div class="mt-10 glass-card rounded-3xl p-6 sm:p-8 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+        <div class="space-y-1.5">
+          <h3 class="text-lg font-bold text-white">Practice Code Repositories</h3>
+          <p class="text-sm text-stone-300">
+            Browse all of my coursework exercises, experiments, and practice files directly on GitHub.
+          </p>
+        </div>
+        <div class="flex flex-wrap items-center gap-3.5 w-full lg:w-auto">
+          <a href="https://github.com/Shakib-2009/My-Practice-"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="inline-flex items-center gap-2 glass-pill hover:border-ember-400 text-white text-xs sm:text-sm font-medium px-4 py-2.5 rounded-xl transition">
+            <svg class="w-4 h-4 text-ember-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+            </svg>
+            <span>Web Practice Repository</span>
+          </a>
+
+          <a href="https://github.com/Shakib-2009/C-Program-Practice-"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="inline-flex items-center gap-2 glass-pill hover:border-ember-400 text-white text-xs sm:text-sm font-medium px-4 py-2.5 rounded-xl transition">
+            <svg class="w-4 h-4 text-ember-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+            <span>C Programming Repository</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 5. LEARNING JOURNEY SECTION ==================== -->
+    <section id="journey" class="py-20 px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto">
+      <div class="max-w-3xl mb-12 space-y-3">
+        <span class="inline-flex items-center gap-2 text-ember-400 font-mono text-xs uppercase tracking-widest px-3 py-1 rounded-full bg-ember-500/10 border border-ember-500/20">
+          Ongoing Progress
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-bold text-white tracking-tight">
+          Learning Journey
+        </h2>
+        <p class="text-stone-300 text-base">
+          Key milestones in my ongoing student journey as I build a strong foundation in programming and web development.
+        </p>
+      </div>
+
+      <!-- Milestones Timeline Grid (No invented dates) -->
+      <div class="relative border-l-2 border-ember-500/30 ml-4 sm:ml-6 pl-6 sm:pl-8 space-y-8">
+        
+        <!-- Milestone 1 -->
+        <div class="relative group">
+          <span class="absolute -left-[33px] sm:-left-[41px] top-1.5 w-4 h-4 rounded-full bg-obsidian border-2 border-ember-500 group-hover:scale-125 transition-transform"></span>
+          <div class="glass-card rounded-2xl p-6">
+            <span class="text-xs font-mono uppercase tracking-wider text-ember-400">Foundation</span>
+            <h3 class="text-lg font-bold text-white mt-1">Practicing programming fundamentals with C</h3>
+            <p class="text-sm text-stone-300 mt-2 leading-relaxed">
+              Learning how programs work under the hood by working with variables, conditions, loops, functions, arrays, strings, and pointers through console-based problem solving.
+            </p>
+          </div>
+        </div>
+
+        <!-- Milestone 2 -->
+        <div class="relative group">
+          <span class="absolute -left-[33px] sm:-left-[41px] top-1.5 w-4 h-4 rounded-full bg-obsidian border-2 border-ember-500 group-hover:scale-125 transition-transform"></span>
+          <div class="glass-card rounded-2xl p-6">
+            <span class="text-xs font-mono uppercase tracking-wider text-ember-400">Web Structure & Styling</span>
+            <h3 class="text-lg font-bold text-white mt-1">Building pages with HTML and CSS</h3>
+            <p class="text-sm text-stone-300 mt-2 leading-relaxed">
+              Creating structured web pages with semantic HTML and styling responsive page layouts with CSS.
+            </p>
+          </div>
+        </div>
+
+        <!-- Milestone 3 -->
+        <div class="relative group">
+          <span class="absolute -left-[33px] sm:-left-[41px] top-1.5 w-4 h-4 rounded-full bg-obsidian border-2 border-ember-500 group-hover:scale-125 transition-transform"></span>
+          <div class="glass-card rounded-2xl p-6">
+            <span class="text-xs font-mono uppercase tracking-wider text-ember-400">Browser Interactivity</span>
+            <h3 class="text-lg font-bold text-white mt-1">Adding interactions with JavaScript</h3>
+            <p class="text-sm text-stone-300 mt-2 leading-relaxed">
+              Practicing core JavaScript logic, handling user input, and updating the DOM through hands-on mini projects like a calculator and task list.
+            </p>
+          </div>
+        </div>
+
+        <!-- Milestone 4 -->
+        <div class="relative group">
+          <span class="absolute -left-[33px] sm:-left-[41px] top-1.5 w-4 h-4 rounded-full bg-obsidian border-2 border-ember-500 group-hover:scale-125 transition-transform"></span>
+          <div class="glass-card rounded-2xl p-6">
+            <span class="text-xs font-mono uppercase tracking-wider text-ember-400">Content Management</span>
+            <h3 class="text-lg font-bold text-white mt-1">Creating and customizing websites with WordPress</h3>
+            <p class="text-sm text-stone-300 mt-2 leading-relaxed">
+              Gaining practical experience setting up, structuring, and customizing websites using WordPress themes and tools.
+            </p>
+          </div>
+        </div>
+
+        <!-- Milestone 5 -->
+        <div class="relative group">
+          <span class="absolute -left-[33px] sm:-left-[41px] top-1.5 w-4 h-4 rounded-full bg-obsidian border-2 border-ember-500 group-hover:scale-125 transition-transform"></span>
+          <div class="glass-card rounded-2xl p-6">
+            <span class="text-xs font-mono uppercase tracking-wider text-ember-400">Version Control</span>
+            <h3 class="text-lg font-bold text-white mt-1">Using Git and GitHub to organize and share projects</h3>
+            <p class="text-sm text-stone-300 mt-2 leading-relaxed">
+              Tracking code changes and publishing coursework and practice repositories on GitHub.
+            </p>
+          </div>
+        </div>
+
+        <!-- Milestone 6 -->
+        <div class="relative group">
+          <span class="absolute -left-[33px] sm:-left-[41px] top-1.5 w-4 h-4 rounded-full bg-emerald-400 border-2 border-obsidian ring-4 ring-emerald-500/20"></span>
+          <div class="glass-card rounded-2xl p-6 border-emerald-500/25">
+            <span class="text-xs font-mono uppercase tracking-wider text-emerald-400">Next Step • Currently Exploring</span>
+            <h3 class="text-lg font-bold text-white mt-1">Exploring backend development with Node.js</h3>
+            <p class="text-sm text-stone-300 mt-2 leading-relaxed">
+              Expanding my JavaScript knowledge beyond the browser to learn server-side and backend fundamentals.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== 6. CONTACT SECTION ==================== -->
+    <section id="contact" class="py-20 px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto">
+      <div class="contact-cards"><div class="contact-card glass-card rounded-3xl text-center relative overflow-hidden">
+        <div aria-hidden="true" class="absolute -bottom-24 left-1/2 -translate-x-1/2 w-96 h-48 bg-ember-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+        <span class="inline-flex items-center gap-2 text-ember-400 font-mono text-xs uppercase tracking-widest px-3 py-1 rounded-full bg-ember-500/10 border border-ember-500/20 mb-4">
+          Connect
+        </span>
+
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-4">
+          Let’s Learn and Build Together
+        </h2>
+
+        <p class="text-base sm:text-lg text-stone-300 max-w-xl mx-auto mb-8 leading-relaxed">
+          I’m open to student collaborations, feedback, and opportunities to learn.
+        </p>
+
+        <!-- Contact Buttons Area (GitHub by default; Email/LinkedIn appear only if Shakib provides them) -->
+        <div class="flex flex-wrap items-center justify-center gap-4">
+          <a href="https://github.com/Shakib-2009"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="inline-flex items-center gap-3 bg-ember-500 hover:bg-ember-600 text-white font-semibold px-7 py-3.5 rounded-full shadow-lg shadow-ember-500/25 transition-all hover:scale-[1.02]">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+            </svg>
+            <span>GitHub Profile (@Shakib-2009)</span>
+          </a>
+
+          <!-- Optional Email Button (Hidden unless set by Shakib) -->
+          <a id="optionalEmailBtn"
+             href="#"
+             class="hidden items-center gap-2.5 glass-pill hover:border-ember-400 text-white font-medium px-6 py-3.5 rounded-full transition">
+            <svg class="w-5 h-5 text-ember-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+            <span id="optionalEmailText">Email Me</span>
+          </a>
+
+          
+          
+        </div>
+      </div>
+          <div class="contact-card linkedin-card">
+        <span class="linkedin-label">Connect on LinkedIn</span>
+        <h3>Let’s Grow and Learn Together</h3>
+        <p>Follow my learning journey and connect with me about student collaborations and opportunities to learn.</p>
+        <a id="optionalLinkedinBtn" href="https://www.linkedin.com/in/shakib-shafi/" target="_blank" rel="noopener noreferrer">
+          <svg class="w-5 h-5 text-ember-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
+            </svg>
+          <span>LinkedIn Profile — Shakib Shafi</span>
+        </a>
+      </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="border-t border-white/10 py-8 px-4 sm:px-6 lg:px-10 mt-10">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-stone-400">
+      <div class="flex items-center gap-2">
+        <span class="font-bold text-white">Shakib</span>
+        <span>•</span>
+        <span>Student Portfolio</span>
+      </div>
+
+      <div class="flex items-center gap-6">
+        <a href="https://github.com/Shakib-2009"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="text-stone-300 hover:text-ember-400 transition font-medium flex items-center gap-1.5">
+          <span>GitHub</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+          </svg>
+        </a>
+
+        <button type="button"
+                onclick="openCustomizer('nav')"
+                class="text-stone-400 hover:text-white transition underline decoration-ember-500/50 underline-offset-4">
+          Customize / Edit Portfolio
+        </button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== INTERACTIVE PORTFOLIO EDITOR DRAWER ==================== -->
+  <!-- Gives Shakib an easy way to edit nav links, add/delete projects, or add an optional resume/email link -->
+  <div id="customizerModal"
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="customizerTitle"
+       class="fixed inset-0 z-50 hidden bg-black/75 backdrop-blur-sm flex justify-end">
+    <div class="w-full max-w-lg bg-[#140b07] border-l border-ember-500/30 h-full flex flex-col justify-between overflow-hidden shadow-2xl">
+      
+      <!-- Modal Header -->
+      <div class="p-5 sm:p-6 border-b border-white/10 flex items-center justify-between">
+        <div>
+          <h2 id="customizerTitle" class="text-lg font-bold text-white">Edit & Customize Portfolio</h2>
+          <p class="text-xs text-stone-400 mt-0.5">Toggle menu items, add new practice projects, or attach optional links.</p>
+        </div>
+        <button id="closeCustomizerBtn"
+                type="button"
+                aria-label="Close editor"
+                class="p-2 rounded-lg text-stone-400 hover:text-white hover:bg-white/5">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Modal Tabs -->
+      <div class="flex border-b border-white/10 px-6 bg-black/20 text-xs font-medium">
+        <button type="button" data-tab="nav" class="customizer-tab py-3 px-4 border-b-2 border-ember-500 text-ember-400">
+          Navigation & Optional Links
+        </button>
+        <button type="button" data-tab="projects" class="customizer-tab py-3 px-4 border-b-2 border-transparent text-stone-400 hover:text-white">
+          Manage Projects
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-6 overflow-y-auto flex-1 space-y-6">
+        
+        <!-- TAB 1: Navigation & Optional Details -->
+        <div id="tabContentNav" class="space-y-6">
+          <div>
+            <h3 class="text-sm font-semibold text-white mb-1">Navigation Menu Items</h3>
+            <p class="text-xs text-stone-400 mb-3">Toggle or rename sections in the top navigation bar (e.g., Projects and Learning Journey instead of Experience).</p>
+            <div id="navEditorList" class="space-y-2.5">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-white/10 space-y-4">
+            <h3 class="text-sm font-semibold text-white">Optional Resume & Contact Details</h3>
+            <p class="text-xs text-stone-400">
+              Following portfolio rules, buttons for Resume, Email, or LinkedIn stay hidden until you provide a real link below.
+            </p>
+
+            <div>
+              <label for="inputResumeUrl" class="block text-xs font-medium text-stone-300 mb-1">Resume File URL (Leave empty to hide button)</label>
+              <input id="inputResumeUrl"
+                     type="url"
+                     placeholder="https://example.com/shakib-resume.pdf"
+                     class="w-full rounded-xl bg-black/40 border border-white/15 px-3.5 py-2 text-sm text-white placeholder-stone-500 focus:border-ember-500" />
+            </div>
+
+            <div>
+              <label for="inputEmailAddress" class="block text-xs font-medium text-stone-300 mb-1">Email Address (Optional)</label>
+              <input id="inputEmailAddress"
+                     type="email"
+                     placeholder="shakib@example.com"
+                     class="w-full rounded-xl bg-black/40 border border-white/15 px-3.5 py-2 text-sm text-white placeholder-stone-500 focus:border-ember-500" />
+            </div>
+
+            <div>
+              <label for="inputLinkedinUrl" class="block text-xs font-medium text-stone-300 mb-1">LinkedIn Profile URL (Optional)</label>
+              <input id="inputLinkedinUrl"
+                     type="url"
+                     placeholder="https://linkedin.com/in/..."
+                     class="w-full rounded-xl bg-black/40 border border-white/15 px-3.5 py-2 text-sm text-white placeholder-stone-500 focus:border-ember-500" />
+            </div>
+
+            <button id="saveOptionalLinksBtn"
+                    type="button"
+                    class="w-full bg-ember-500 hover:bg-ember-600 text-white font-semibold text-sm py-2.5 px-4 rounded-xl transition">
+              Apply Changes
+            </button>
+          </div>
+        </div>
+
+        <!-- TAB 2: Add / Remove Projects -->
+        <div id="tabContentProjects" class="hidden space-y-6">
+          <form id="addProjectForm" class="space-y-3.5 bg-white/[0.03] p-4 rounded-2xl border border-white/10">
+            <h3 class="text-sm font-semibold text-white">Add a Practice Project</h3>
+
+            <div>
+              <label for="projTitle" class="block text-xs text-stone-300 mb-1">Project Name *</label>
+              <input id="projTitle" required type="text" placeholder="e.g., Number Guessing Game" class="w-full rounded-xl bg-black/40 border border-white/15 px-3 py-2 text-sm text-white" />
+            </div>
+
+            <div>
+              <label for="projTech" class="block text-xs text-stone-300 mb-1">Technologies (comma-separated) *</label>
+              <input id="projTech" required type="text" placeholder="e.g., C, Functions, Loops" class="w-full rounded-xl bg-black/40 border border-white/15 px-3 py-2 text-sm text-white" />
+            </div>
+
+            <div>
+              <label for="projDesc" class="block text-xs text-stone-300 mb-1">Short Description *</label>
+              <textarea id="projDesc" required rows="2" placeholder="What does this practice project do?" class="w-full rounded-xl bg-black/40 border border-white/15 px-3 py-2 text-sm text-white"></textarea>
+            </div>
+
+            <div>
+              <label for="projLearned" class="block text-xs text-stone-300 mb-1">What I Learned *</label>
+              <input id="projLearned" required type="text" placeholder="e.g., Practiced conditional statements and user input." class="w-full rounded-xl bg-black/40 border border-white/15 px-3 py-2 text-sm text-white" />
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label for="projCodeUrl" class="block text-xs text-stone-300 mb-1">Code / Repo URL *</label>
+                <input id="projCodeUrl" required type="url" value="https://github.com/Shakib-2009/My-Practice-" class="w-full rounded-xl bg-black/40 border border-white/15 px-3 py-2 text-sm text-white" />
+              </div>
+              <div>
+                <label for="projBtnLabel" class="block text-xs text-stone-300 mb-1">Button Label</label>
+                <input id="projBtnLabel" type="text" value="Browse Repository" class="w-full rounded-xl bg-black/40 border border-white/15 px-3 py-2 text-sm text-white" />
+              </div>
+            </div>
+
+            <div>
+              <label for="projDemoUrl" class="block text-xs text-stone-300 mb-1">Live Demo URL (Leave blank to hide demo button)</label>
+              <input id="projDemoUrl" type="url" placeholder="https://..." class="w-full rounded-xl bg-black/40 border border-white/15 px-3 py-2 text-sm text-white" />
+            </div>
+
+            <button type="submit" class="w-full bg-ember-500 hover:bg-ember-600 text-white font-semibold text-sm py-2.5 px-4 rounded-xl transition">
+              + Add Project Card
+            </button>
+          </form>
+
+          <div>
+            <h3 class="text-sm font-semibold text-white mb-2.5">Current Projects</h3>
+            <div id="manageProjectsList" class="space-y-2.5">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-4 border-t border-white/10 bg-black/40 flex items-center justify-between text-xs">
+        <button id="resetDefaultsBtn" type="button" class="text-stone-400 hover:text-rose-400 transition">
+          Reset to Default Content
+        </button>
+        <span id="saveStatusToast" class="text-emerald-400 font-medium opacity-0 transition-opacity">Saved!</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ==================== JAVASCRIPT LOGIC ==================== -->
+  <script>
+    // Default Portfolio Data strictly matching Shakib's verified student profile
+    const DEFAULT_STATE = {
+      navItems: [
+        { id: 'home', label: 'Home', href: '#home', visible: true },
+        { id: 'about', label: 'About', href: '#about', visible: true },
+        { id: 'skills', label: 'Skills', href: '#skills', visible: true },
+        { id: 'projects', label: 'Projects', href: '#projects', visible: true },
+        { id: 'journey', label: 'Learning Journey', href: '#journey', visible: true },
+        { id: 'contact', label: 'Contact', href: '#contact', visible: true }
+      ],
+      optionalLinks: {
+        resumeUrl: '',
+        email: '',
+        linkedinUrl: 'https://www.linkedin.com/in/shakib-shafi/'
+      },
+      projects: [
+        {
+          id: 'proj-c-shopping',
+          name: 'Mini Shopping Management System',
+          category: 'C Coursework Project',
+          technologies: ['C'],
+          description: 'A console-based shopping system for adding, displaying, and searching products, calculating totals, applying discounts, and displaying the final bill.',
+          learned: 'Practiced arrays, strings, functions, loops, conditions, and pointers.',
+          codeUrl: 'https://github.com/Shakib-2009/C-Program-Practice-/blob/main/Assignment%202/Question%2040.c',
+          codeLabel: 'View Code',
+          demoUrl: ''
+        },
+        {
+          id: 'proj-js-calc',
+          name: 'JavaScript Calculator',
+          category: 'Web Practice Project',
+          technologies: ['HTML', 'CSS', 'JavaScript'],
+          description: 'A practice project for arithmetic operations and user interaction.',
+          learned: 'Practiced JavaScript logic and handling user input.',
+          codeUrl: 'https://github.com/Shakib-2009/My-Practice-',
+          codeLabel: 'Browse Repository',
+          demoUrl: ''
+        },
+        {
+          id: 'proj-todo',
+          name: 'Todo List',
+          category: 'Web Practice Project',
+          technologies: ['HTML', 'CSS', 'JavaScript'],
+          description: 'A practice project for managing tasks.',
+          learned: 'Practiced DOM manipulation, event handling, and managing task items in the browser.',
+          codeUrl: 'https://github.com/Shakib-2009/My-Practice-',
+          codeLabel: 'Browse Repository',
+          demoUrl: ''
+        },
+        {
+          id: 'proj-course-web',
+          name: 'Course Website',
+          category: 'Coursework Project',
+          technologies: ['HTML', 'CSS'],
+          description: 'An HTML and CSS coursework project for practicing website structure and styling.',
+          learned: 'Practiced semantic HTML structure, page layout, and responsive CSS styling.',
+          codeUrl: 'https://github.com/Shakib-2009/My-Practice-',
+          codeLabel: 'Browse Repository',
+          demoUrl: ''
+        }
+      ]
+    };
+
+    const STORAGE_KEY = 'shakib_portfolio_state_v1';
+
+    function loadState() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          const restored = JSON.parse(saved);
+          restored.optionalLinks = { ...DEFAULT_STATE.optionalLinks, ...restored.optionalLinks };
+          if (!restored.optionalLinks.linkedinUrl) restored.optionalLinks.linkedinUrl = DEFAULT_STATE.optionalLinks.linkedinUrl;
+          return restored;
+        }
+      } catch (err) {
+        console.warn('Could not read saved state, using defaults.', err);
+      }
+      return JSON.parse(JSON.stringify(DEFAULT_STATE));
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(portfolioState));
+        showToast('Changes saved!');
+      } catch (err) {
+        console.warn('Could not persist state.', err);
+      }
+    }
+
+    let portfolioState = loadState();
+
+    // Escape HTML helper to keep custom user inputs safe
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    // Render Navigation (Desktop & Mobile)
+    function renderNavigation() {
+      const desktopList = document.getElementById('desktopNavList');
+      const mobileList = document.getElementById('mobileNavList');
+
+      const visibleItems = portfolioState.navItems.filter(item => item.visible);
+
+      desktopList.innerHTML = visibleItems.map((item, idx) => `
+        <li>
+          <a href="${escapeHtml(item.href)}"
+             data-nav-section="${escapeHtml(item.id)}"
+             class="nav-link px-4 py-2 rounded-full transition-colors ${idx === 0 ? 'text-ember-400 font-semibold' : 'text-stone-300 hover:text-white'}">
+            ${escapeHtml(item.label)}
+          </a>
+        </li>
+      `).join('');
+
+      mobileList.innerHTML = visibleItems.map(item => `
+        <li>
+          <a href="${escapeHtml(item.href)}"
+             class="mobile-nav-link block px-4 py-2.5 rounded-xl text-stone-200 hover:text-white hover:bg-white/5 transition">
+            ${escapeHtml(item.label)}
+          </a>
+        </li>
+      `).join('');
+
+      // Close mobile menu when a link is clicked
+      document.querySelectorAll('.mobile-nav-link').forEach(link => {
+        link.addEventListener('click', () => toggleMobileMenu(false));
+      });
+    }
+
+    // Render Optional Links (Resume, Email, LinkedIn - Strictly hidden unless provided)
+    function renderOptionalLinks() {
+      const { resumeUrl, email, linkedinUrl } = portfolioState.optionalLinks;
+
+      const resumeHeaderBtn = document.getElementById('resumeHeaderBtn');
+      const mobileResumeWrapper = document.getElementById('mobileResumeWrapper');
+      const resumeMobileBtn = document.getElementById('resumeMobileBtn');
+
+      if (resumeUrl && resumeUrl.trim() !== '') {
+        resumeHeaderBtn.href = resumeUrl.trim();
+        resumeHeaderBtn.classList.remove('hidden');
+        resumeHeaderBtn.classList.add('inline-flex');
+        resumeMobileBtn.href = resumeUrl.trim();
+        mobileResumeWrapper.classList.remove('hidden');
+      } else {
+        resumeHeaderBtn.classList.add('hidden');
+        resumeHeaderBtn.classList.remove('inline-flex');
+        mobileResumeWrapper.classList.add('hidden');
+      }
+
+      const emailBtn = document.getElementById('optionalEmailBtn');
+      const emailText = document.getElementById('optionalEmailText');
+      if (email && email.trim() !== '') {
+        emailBtn.href = `mailto:${email.trim()}`;
+        emailText.textContent = email.trim();
+        emailBtn.classList.remove('hidden');
+        emailBtn.classList.add('inline-flex');
+      } else {
+        emailBtn.classList.add('hidden');
+        emailBtn.classList.remove('inline-flex');
+      }
+
+      const linkedinBtn = document.getElementById('optionalLinkedinBtn');
+      if (linkedinUrl && linkedinUrl.trim() !== '') {
+        linkedinBtn.href = linkedinUrl.trim();
+        linkedinBtn.classList.remove('hidden');
+        linkedinBtn.classList.add('inline-flex');
+      } else {
+        linkedinBtn.classList.add('hidden');
+        linkedinBtn.classList.remove('inline-flex');
+      }
+    }
+
+    // Render Student Projects Grid
+    const PROJECT_ILLUSTRATIONS = {
+      'c-shopping': `
+        <svg viewBox="0 0 280 155" class="w-full h-full object-cover">
+          <defs>
+            <linearGradient id="cWinBg" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#1d2436"/>
+              <stop offset="100%" stop-color="#0f131d"/>
+            </linearGradient>
+            <radialGradient id="cOrangeGlow" cx="50%" cy="90%" r="60%">
+              <stop offset="0%" stop-color="#ff621a" stop-opacity="0.45"/>
+              <stop offset="100%" stop-color="#ff621a" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <rect width="280" height="155" fill="#120b08"/>
+          <rect width="280" height="155" fill="url(#cOrangeGlow)"/>
+          <!-- Main Code Window -->
+          <rect x="20" y="16" width="225" height="115" rx="12" fill="url(#cWinBg)" stroke="#384152" stroke-width="1.5"/>
+          <!-- Window Top Dots -->
+          <circle cx="34" cy="28" r="3" fill="#ff5f56"/>
+          <circle cx="44" cy="28" r="3" fill="#ffbd2e"/>
+          <circle cx="54" cy="28" r="3" fill="#27c93f"/>
+          <!-- C Badge inside window -->
+          <rect x="34" y="45" width="38" height="38" rx="9" fill="#252f42" stroke="#475569" stroke-width="1"/>
+          <text x="45" y="71" fill="#e2e8f0" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="22">C</text>
+          <!-- Colored Syntax Bars -->
+          <rect x="86" y="46" width="52" height="4" rx="2" fill="#38bdf8"/>
+          <rect x="94" y="56" width="84" height="4" rx="2" fill="#facc15"/>
+          <rect x="94" y="66" width="68" height="4" rx="2" fill="#4ade80"/>
+          <rect x="94" y="76" width="95" height="4" rx="2" fill="#fb923c"/>
+          <rect x="86" y="86" width="60" height="4" rx="2" fill="#94a3b8"/>
+          <rect x="86" y="96" width="42" height="4" rx="2" fill="#f472b6"/>
+          <!-- Floating Terminal Prompt Box -->
+          <rect x="172" y="84" width="88" height="54" rx="10" fill="#111622" stroke="#ff6a26" stroke-width="1.5"/>
+          <text x="186" y="116" fill="#e2e8f0" font-family="JetBrains Mono, monospace" font-weight="700" font-size="16">&gt;_</text>
+        </svg>
+      `,
+      'js-calc': `
+        <svg viewBox="0 0 280 155" class="w-full h-full object-cover">
+          <rect width="280" height="155" fill="#120b08"/>
+          <circle cx="210" cy="125" r="65" fill="#ff621a" opacity="0.2" filter="blur(18px)"/>
+          <!-- 3D Tilted Calculator Body -->
+          <rect x="32" y="14" width="216" height="128" rx="14" fill="#1b2230" stroke="#374151" stroke-width="1.5"/>
+          <!-- Calculator Screen -->
+          <rect x="44" y="24" width="192" height="28" rx="7" fill="#0f141d" stroke="#263040"/>
+          <text x="222" y="44" text-anchor="end" fill="#ffffff" font-family="Plus Jakarta Sans, sans-serif" font-weight="700" font-size="16">0</text>
+          <!-- Keypad Grid (3 rows x 4 cols) -->
+          <!-- Row 1 -->
+          <rect x="44" y="60" width="42" height="20" rx="5" fill="#263042"/><text x="65" y="74" text-anchor="middle" fill="#cbd5e1" font-size="10" font-weight="700">3</text>
+          <rect x="94" y="60" width="42" height="20" rx="5" fill="#263042"/><text x="115" y="74" text-anchor="middle" fill="#cbd5e1" font-size="10" font-weight="700">3</text>
+          <rect x="144" y="60" width="42" height="20" rx="5" fill="#263042"/><text x="165" y="74" text-anchor="middle" fill="#cbd5e1" font-size="10" font-weight="700">8</text>
+          <rect x="194" y="60" width="42" height="20" rx="5" fill="#2e3b52"/><text x="215" y="74" text-anchor="middle" fill="#93c5fd" font-size="12" font-weight="700">+</text>
+          <!-- Row 2 -->
+          <rect x="44" y="86" width="42" height="20" rx="5" fill="#263042"/><text x="65" y="100" text-anchor="middle" fill="#cbd5e1" font-size="10" font-weight="700">4</text>
+          <rect x="94" y="86" width="42" height="20" rx="5" fill="#263042"/><text x="115" y="100" text-anchor="middle" fill="#cbd5e1" font-size="10" font-weight="700">6</text>
+          <rect x="144" y="86" width="42" height="20" rx="5" fill="#263042"/><text x="165" y="100" text-anchor="middle" fill="#cbd5e1" font-size="10" font-weight="700">6</text>
+          <rect x="194" y="86" width="42" height="20" rx="5" fill="#2e3b52"/><text x="215" y="100" text-anchor="middle" fill="#93c5fd" font-size="11" font-weight="700">×</text>
+          <!-- Row 3 -->
+          <rect x="44" y="112" width="42" height="20" rx="5" fill="#263042"/><text x="65" y="126" text-anchor="middle" fill="#cbd5e1" font-size="10" font-weight="700">0</text>
+          <rect x="94" y="112" width="42" height="20" rx="5" fill="#263042"/><text x="115" y="126" text-anchor="middle" fill="#cbd5e1" font-size="10" font-weight="700">2</text>
+          <rect x="144" y="112" width="42" height="20" rx="5" fill="#263042"/><text x="165" y="126" text-anchor="middle" fill="#cbd5e1" font-size="10" font-weight="700">=</text>
+          <!-- Glowing Orange Plus Button -->
+          <rect x="194" y="112" width="42" height="20" rx="5" fill="#ff621a"/>
+          <text x="215" y="126" text-anchor="middle" fill="#ffffff" font-size="13" font-weight="800">+</text>
+        </svg>
+      `,
+      'todo-list': `
+        <svg viewBox="0 0 280 155" class="w-full h-full object-cover">
+          <rect width="280" height="155" fill="#120b08"/>
+          <circle cx="215" cy="125" r="60" fill="#ff621a" opacity="0.22" filter="blur(18px)"/>
+          <!-- Todo Card Container -->
+          <rect x="34" y="14" width="212" height="128" rx="14" fill="#1b2230" stroke="#374151" stroke-width="1.5"/>
+          <text x="52" y="38" fill="#ffffff" font-family="Plus Jakarta Sans, sans-serif" font-weight="700" font-size="12">My Tasks</text>
+          <text x="224" y="38" fill="#ff6a26" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="15">+</text>
+          <!-- Task Item 1 (Checked Green) -->
+          <rect x="48" y="48" width="184" height="22" rx="6" fill="#252f42"/>
+          <rect x="55" y="53" width="12" height="12" rx="3" fill="#22c55e"/>
+          <path d="M58 59 L60.5 61.5 L64.5 56.5" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+          <rect x="76" y="57" width="96" height="4" rx="2" fill="#64748b"/>
+          <!-- Task Item 2 -->
+          <rect x="48" y="76" width="184" height="22" rx="6" fill="#20293a"/>
+          <rect x="55" y="81" width="12" height="12" rx="3" stroke="#64748b" stroke-width="1.5" fill="none"/>
+          <rect x="76" y="85" width="112" height="4" rx="2" fill="#475569"/>
+          <!-- Task Item 3 -->
+          <rect x="48" y="104" width="184" height="22" rx="6" fill="#20293a"/>
+          <rect x="55" y="109" width="12" height="12" rx="3" stroke="#64748b" stroke-width="1.5" fill="none"/>
+          <rect x="76" y="113" width="82" height="4" rx="2" fill="#475569"/>
+          <!-- Glowing Orange Add Button -->
+          <rect x="190" y="110" width="42" height="22" rx="6" fill="#ff621a"/>
+          <text x="211" y="125" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="800">+</text>
+        </svg>
+      `,
+      'course-web': `
+        <svg viewBox="0 0 280 155" class="w-full h-full object-cover">
+          <rect width="280" height="155" fill="#120b08"/>
+          <circle cx="80" cy="120" r="65" fill="#ff621a" opacity="0.22" filter="blur(18px)"/>
+          <!-- Browser Window Frame -->
+          <rect x="24" y="14" width="232" height="128" rx="12" fill="#e2e8f0" stroke="#475569" stroke-width="1.5"/>
+          <!-- Browser Top Bar -->
+          <path d="M24 26 C24 19 29 14 36 14 L244 14 C251 14 256 19 256 26 L256 34 L24 34 Z" fill="#1e293b"/>
+          <circle cx="36" cy="24" r="3" fill="#ff5f56"/>
+          <circle cx="46" cy="24" r="3" fill="#ffbd2e"/>
+          <circle cx="56" cy="24" r="3" fill="#27c93f"/>
+          <!-- Website Hero Banner Inside Browser -->
+          <rect x="34" y="42" width="212" height="54" rx="6" fill="#1e293b"/>
+          <!-- Mountain Graphic Left -->
+          <polygon points="42,90 72,56 102,90" fill="#ea580c" opacity="0.85"/>
+          <polygon points="75,90 98,66 122,90" fill="#fb923c" opacity="0.65"/>
+          <!-- Hero Text Bars Right -->
+          <rect x="142" y="54" width="46" height="5" rx="2.5" fill="#38bdf8"/>
+          <rect x="142" y="64" width="84" height="4" rx="2" fill="#94a3b8"/>
+          <rect x="142" y="72" width="72" height="4" rx="2" fill="#64748b"/>
+          <rect x="142" y="81" width="38" height="7" rx="3.5" fill="#ea580c"/>
+          <!-- 3 Feature Cards Row at Bottom -->
+          <rect x="34" y="103" width="66" height="30" rx="5" fill="#cbd5e1"/>
+          <rect x="107" y="103" width="66" height="30" rx="5" fill="#cbd5e1"/>
+          <rect x="180" y="103" width="66" height="30" rx="5" fill="#cbd5e1"/>
+        </svg>
+      `
+    };
+    function renderProjects() {
+      const keys = { 'proj-c-shopping': 'c-shopping', 'proj-js-calc': 'js-calc', 'proj-todo': 'todo-list', 'proj-course-web': 'course-web' };
+      document.getElementById('projectsGrid').innerHTML = portfolioState.projects.map(proj => {
+        const artKey = keys[proj.id] || 'course-web';
+        const primary = proj.id === 'proj-c-shopping';
+        const demo = proj.demoUrl && proj.demoUrl.trim() ? `<a class="project-action" href="${escapeHtml(proj.demoUrl)}" target="_blank" rel="noopener noreferrer">Live Demo ↗</a>` : '';
+        return `<article class="project-showcase-card">
+          <div class="project-art" aria-hidden="true">${PROJECT_ILLUSTRATIONS[artKey]}</div>
+          <div class="project-copy">
+            <h3>${escapeHtml(proj.name)}</h3>
+            <p class="project-technologies">${escapeHtml((proj.technologies || []).join(' • '))}</p>
+            <p>${escapeHtml(proj.description)}</p>
+            <p class="project-learning"><span>What I learned</span>${escapeHtml(proj.learned || '')}</p>
+          </div>
+          <div class="project-actions">
+            <a class="project-action ${primary ? 'project-action-primary' : ''}" href="${escapeHtml(proj.codeUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(proj.codeLabel || 'Browse Repository')} ↗</a>
+            ${demo}
+          </div>
+        </article>`;
+      }).join('');
+    }
+    // Render Customizer Drawer Controls
+    function renderCustomizerControls() {
+      // 1. Navigation items editor
+      const navEditorList = document.getElementById('navEditorList');
+      navEditorList.innerHTML = portfolioState.navItems.map((item, index) => `
+        <div class="flex items-center justify-between gap-3 p-2.5 rounded-xl bg-white/[0.03] border border-white/10">
+          <label class="flex items-center gap-2.5 text-xs text-stone-200 cursor-pointer">
+            <input type="checkbox"
+                   data-nav-index="${index}"
+                   ${item.visible ? 'checked' : ''}
+                   class="nav-toggle-checkbox rounded accent-ember-500 w-4 h-4" />
+            <span>Show section</span>
+          </label>
+          <input type="text"
+                 data-nav-label-index="${index}"
+                 value="${escapeHtml(item.label)}"
+                 aria-label="Menu label"
+                 class="nav-label-input rounded-lg bg-black/50 border border-white/15 px-2.5 py-1 text-xs text-white w-44" />
+        </div>
+      `).join('');
+
+      document.querySelectorAll('.nav-toggle-checkbox').forEach(box => {
+        box.addEventListener('change', (e) => {
+          const idx = Number(e.target.getAttribute('data-nav-index'));
+          portfolioState.navItems[idx].visible = e.target.checked;
+          saveState();
+          renderNavigation();
+        });
+      });
+
+      document.querySelectorAll('.nav-label-input').forEach(inp => {
+        inp.addEventListener('input', (e) => {
+          const idx = Number(e.target.getAttribute('data-nav-label-index'));
+          portfolioState.navItems[idx].label = e.target.value || DEFAULT_STATE.navItems[idx].label;
+          saveState();
+          renderNavigation();
+        });
+      });
+
+      // 2. Optional links inputs
+      document.getElementById('inputResumeUrl').value = portfolioState.optionalLinks.resumeUrl || '';
+      document.getElementById('inputEmailAddress').value = portfolioState.optionalLinks.email || '';
+      document.getElementById('inputLinkedinUrl').value = portfolioState.optionalLinks.linkedinUrl || '';
+
+      // 3. Manage projects list
+      const manageList = document.getElementById('manageProjectsList');
+      manageList.innerHTML = portfolioState.projects.map((p, idx) => `
+        <div class="flex items-center justify-between gap-2 p-3 rounded-xl bg-white/[0.03] border border-white/10">
+          <div>
+            <div class="text-xs font-semibold text-white">${escapeHtml(p.name)}</div>
+            <div class="text-[11px] text-stone-400">${escapeHtml((p.technologies || []).join(', '))}</div>
+          </div>
+          <button type="button"
+                  data-remove-proj="${idx}"
+                  class="remove-proj-btn text-xs text-rose-400 hover:text-rose-300 px-2.5 py-1 rounded-lg bg-rose-500/10 border border-rose-500/20">
+            Delete
+          </button>
+        </div>
+      `).join('');
+
+      document.querySelectorAll('.remove-proj-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const idx = Number(e.currentTarget.getAttribute('data-remove-proj'));
+          portfolioState.projects.splice(idx, 1);
+          saveState();
+          renderProjects();
+          renderCustomizerControls();
+        });
+      });
+    }
+
+    // Mobile Menu Toggle
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenuPanel = document.getElementById('mobileMenuPanel');
+    const menuIconOpen = document.getElementById('menuIconOpen');
+    const menuIconClose = document.getElementById('menuIconClose');
+
+    function toggleMobileMenu(forceState) {
+      const isExpanded = mobileMenuBtn.getAttribute('aria-expanded') === 'true';
+      const nextState = typeof forceState === 'boolean' ? forceState : !isExpanded;
+      mobileMenuBtn.setAttribute('aria-expanded', String(nextState));
+      mobileMenuPanel.classList.toggle('hidden', !nextState);
+      menuIconOpen.classList.toggle('hidden', nextState);
+      menuIconClose.classList.toggle('hidden', !nextState);
+    }
+
+    mobileMenuBtn.addEventListener('click', () => toggleMobileMenu());
+
+    // Customizer Drawer Open/Close & Tabs
+    const customizerModal = document.getElementById('customizerModal');
+    const openCustomizerBtn = document.getElementById('openCustomizerBtn');
+    const closeCustomizerBtn = document.getElementById('closeCustomizerBtn');
+    const tabButtons = document.querySelectorAll('.customizer-tab');
+    const tabContentNav = document.getElementById('tabContentNav');
+    const tabContentProjects = document.getElementById('tabContentProjects');
+
+    function switchCustomizerTab(tabName) {
+      tabButtons.forEach(btn => {
+        const active = btn.getAttribute('data-tab') === tabName;
+        btn.classList.toggle('border-ember-500', active);
+        btn.classList.toggle('text-ember-400', active);
+        btn.classList.toggle('border-transparent', !active);
+        btn.classList.toggle('text-stone-400', !active);
+      });
+      tabContentNav.classList.toggle('hidden', tabName !== 'nav');
+      tabContentProjects.classList.toggle('hidden', tabName !== 'projects');
+    }
+
+    function openCustomizer(initialTab = 'nav') {
+      renderCustomizerControls();
+      switchCustomizerTab(initialTab);
+      customizerModal.classList.remove('hidden');
+    }
+
+    function closeCustomizer() {
+      customizerModal.classList.add('hidden');
+    }
+
+    openCustomizerBtn.addEventListener('click', () => openCustomizer('nav'));
+    closeCustomizerBtn.addEventListener('click', closeCustomizer);
+    customizerModal.addEventListener('click', (e) => {
+      if (e.target === customizerModal) closeCustomizer();
+    });
+
+    tabButtons.forEach(btn => {
+      btn.addEventListener('click', () => switchCustomizerTab(btn.getAttribute('data-tab')));
+    });
+
+    // Save Optional Resume / Email / LinkedIn Links
+    document.getElementById('saveOptionalLinksBtn').addEventListener('click', () => {
+      portfolioState.optionalLinks.resumeUrl = document.getElementById('inputResumeUrl').value.trim();
+      portfolioState.optionalLinks.email = document.getElementById('inputEmailAddress').value.trim();
+      portfolioState.optionalLinks.linkedinUrl = document.getElementById('inputLinkedinUrl').value.trim();
+      saveState();
+      renderOptionalLinks();
+    });
+
+    // Add New Project Handler
+    document.getElementById('addProjectForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('projTitle').value.trim();
+      const techRaw = document.getElementById('projTech').value.trim();
+      const description = document.getElementById('projDesc').value.trim();
+      const learned = document.getElementById('projLearned').value.trim();
+      const codeUrl = document.getElementById('projCodeUrl').value.trim();
+      const codeLabel = document.getElementById('projBtnLabel').value.trim() || 'Browse Repository';
+      const demoUrl = document.getElementById('projDemoUrl').value.trim();
+
+      if (!name || !description || !learned || !codeUrl) return;
+
+      portfolioState.projects.push({
+        id: 'proj-' + Date.now(),
+        name,
+        category: 'Student Practice Project',
+        technologies: techRaw.split(',').map(s => s.trim()).filter(Boolean),
+        description,
+        learned,
+        codeUrl,
+        codeLabel,
+        demoUrl
+      });
+
+      saveState();
+      renderProjects();
+      renderCustomizerControls();
+      e.target.reset();
+      document.getElementById('projCodeUrl').value = 'https://github.com/Shakib-2009/My-Practice-';
+      document.getElementById('projBtnLabel').value = 'Browse Repository';
+    });
+
+    // Reset to Default Content
+    document.getElementById('resetDefaultsBtn').addEventListener('click', () => {
+      portfolioState = JSON.parse(JSON.stringify(DEFAULT_STATE));
+      saveState();
+      renderNavigation();
+      renderOptionalLinks();
+      renderProjects();
+      renderCustomizerControls();
+    });
+
+    function showToast(msg) {
+      const toast = document.getElementById('saveStatusToast');
+      toast.textContent = msg;
+      toast.classList.remove('opacity-0');
+      setTimeout(() => toast.classList.add('opacity-0'), 1800);
+    }
+
+    // Active Section Highlight on Scroll
+    function setupScrollSpy() {
+      const sections = document.querySelectorAll('main section[id]');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const activeId = entry.target.getAttribute('id');
+            document.querySelectorAll('.nav-link').forEach(link => {
+              const isMatch = link.getAttribute('data-nav-section') === activeId;
+              link.classList.toggle('text-ember-400', isMatch);
+              link.classList.toggle('font-semibold', isMatch);
+              link.classList.toggle('text-stone-300', !isMatch);
+            });
+          }
+        });
+      }, { rootMargin: '-30% 0px -60% 0px' });
+
+      sections.forEach(sec => observer.observe(sec));
+    }
+
+    // Initialize Portfolio on Load
+    window.addEventListener('DOMContentLoaded', () => {
+      renderNavigation();
+      renderOptionalLinks();
+      renderProjects();
+      setupScrollSpy();
+    });
+  </script>
+</body>
+</html>
