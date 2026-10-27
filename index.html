@@ -1096,12 +1096,12 @@
         },
         {
           id: 'proj-course-web',
-          name: 'Course Website',
+          name: 'SK Institute Website',
           category: 'Coursework Project',
           technologies: ['HTML', 'CSS'],
           description: 'An HTML and CSS coursework project for practicing website structure and styling.',
           learned: 'Practiced semantic HTML structure, page layout, and responsive CSS styling.',
-          codeUrl: 'https://github.com/Shakib-2009/My-Practice-',
+          codeUrl: 'https://github.com/Shakib-2009/My-Practice-/tree/main/Mars-tech%20HTML%20CSS%20project',
           codeLabel: 'Browse Repository',
           demoUrl: ''
         }
@@ -1117,6 +1117,13 @@
           const restored = JSON.parse(saved);
           restored.optionalLinks = { ...DEFAULT_STATE.optionalLinks, ...restored.optionalLinks };
           if (!restored.optionalLinks.linkedinUrl) restored.optionalLinks.linkedinUrl = DEFAULT_STATE.optionalLinks.linkedinUrl;
+          const courseProject = restored.projects?.find(project => project.id === 'proj-course-web');
+          if (courseProject) {
+            if (courseProject.name === 'Course Website') courseProject.name = 'SK Institute Website';
+            if (courseProject.codeUrl === 'https://github.com/Shakib-2009/My-Practice-' || courseProject.codeUrl === 'https://github.com/Shakib-2009/My-Practice-/') {
+              courseProject.codeUrl = 'https://github.com/Shakib-2009/My-Practice-/tree/main/Mars-tech%20HTML%20CSS%20project';
+            }
+          }
           return restored;
         }
       } catch (err) {
